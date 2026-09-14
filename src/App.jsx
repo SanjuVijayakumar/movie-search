@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import Header from "./components/Header/Header";
 import SearchBar from "./components/SearchBar/SearchBar";
+import MovieList from "./components/movielist/MovieList";
 
 function App() {
 
@@ -43,6 +44,8 @@ function App() {
         setSearch={setSearch}
         onSearch={handleSearch}
       />
+
+      <MovieList />
 
     </main>
   );
