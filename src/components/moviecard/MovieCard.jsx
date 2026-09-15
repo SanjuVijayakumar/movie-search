@@ -1,7 +1,7 @@
 import React from "react";
 import { Heart, Star, Clock } from "lucide-react";
 
-export const MovieCard = ({ movie }) => {
+export const MovieCard = ({ movie, onViewDetails }) => {
   return (
     <div className="group overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-md transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:shadow-red-600/10 dark:border-zinc-800 dark:bg-zinc-900">
 
@@ -90,7 +90,7 @@ export const MovieCard = ({ movie }) => {
         )}
 
         {/* Details Button */}
-        <button
+        <button onClick={() => onViewDetails(movie)}
           className="mt-4 w-full rounded-lg border border-red-600 py-2.5 text-sm font-semibold text-red-600 transition hover:bg-red-600 hover:text-white"
         >
           View Details

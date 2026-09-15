@@ -3,7 +3,7 @@ import { MovieCard } from "../moviecard/MovieCard";
 import MovieSkeleton from "./MovieSkeleton";
 import EmptyState from "./EmptyState";
 
-const MovieList = ({ movies, loading, showEmpty }) => { 
+const MovieList = ({ movies, loading, showEmpty, onViewDetails }) => { 
 
   return (
     <section className="bg-white px-4 py-10 dark:bg-black">
@@ -21,7 +21,7 @@ const MovieList = ({ movies, loading, showEmpty }) => {
             <EmptyState />
           ) : (
             movies.map((movie) => (
-              <MovieCard key={movie.id} movie={movie} />
+              <MovieCard key={movie.id} movie={movie} onViewDetails={onViewDetails} />
             ))
           )}
         </div>

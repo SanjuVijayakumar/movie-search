@@ -4,6 +4,8 @@ import Header from "./components/Header/Header";
 import SearchBar from "./components/SearchBar/SearchBar";
 import MovieList from "./components/movielist/MovieList";
 import { searchMovies, getMovieDetails } from "./api/MovieApi";
+import MovieDetails from "./components/moviedetails/MovieDetails";
+
 
 function App() {
   // Search state
@@ -11,8 +13,13 @@ function App() {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showEmpty, setShowEmpty] = useState(false);
+  const [selectedMovie, setSelectedMovie] = useState(null);
 
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
+
+  const handleViewDetails = (movie) => {
+    setSelectedMovie(movie);
+  };
 
   // Search handler
   const handleSearch = async (movieName) => {
@@ -91,7 +98,11 @@ function App() {
       {/* Search Bar */}
       <SearchBar search={search} setSearch={setSearch} onSearch={handleSearch} />
 
-      <MovieList movies={movies} loading={loading} showEmpty={showEmpty} />
+      <MovieList movies={movies} loading={loading} showEmpty={showEmpty} onViewDetails={handleViewDetails} />
+
+      {selectedMovie && (
+        <MovieDetails movie={selectedMovie} onClose={() => setSelectedMovie(null)} />
+      )}
     </main>
   );
 }
