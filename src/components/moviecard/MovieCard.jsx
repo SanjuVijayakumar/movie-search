@@ -1,39 +1,24 @@
-import React from 'react'
-import { Heart, Star } from "lucide-react";
+import React from "react";
+import { Heart, Star, Clock } from "lucide-react";
 
 export const MovieCard = ({ movie }) => {
-
-    const movies = [
-    {
-        id: 1,
-        title: "The Batman",
-        year: 2022,
-        rating: 8.2,
-        genre: "Action",
-        poster: "..."
-    },
-    {
-        id: 2,
-        title: "Inception",
-        year: 2010,
-        rating: 8.8,
-        genre: "Sci-Fi",
-        poster: "..."
-    }
-    ];
-
-
   return (
     <div className="group overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-md transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:shadow-red-600/10 dark:border-zinc-800 dark:bg-zinc-900">
 
       {/* Poster */}
       <div className="relative aspect-[2/3] overflow-hidden bg-zinc-200 dark:bg-zinc-800">
 
-        <img
-          src={movie.poster}
-          alt={movie.title}
-          className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-        />
+        {movie.posterLarge ? (
+          <img
+            src={movie.posterLarge}
+            alt={movie.title}
+            className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+          />
+        ) : (
+          <div className="flex h-full items-center justify-center text-gray-500">
+            No Poster
+          </div>
+        )}
 
         {/* Favorite Button */}
         <button
@@ -44,13 +29,15 @@ export const MovieCard = ({ movie }) => {
         </button>
 
         {/* Rating */}
-        <div className="absolute bottom-3 left-3 flex items-center gap-1 rounded-lg bg-black/75 px-2.5 py-1.5 text-sm font-semibold text-white backdrop-blur-sm">
-          <Star
-            size={15}
-            className="fill-red-500 text-red-500"
-          />
-          {movie.rating}
-        </div>
+        {movie.user_rating && (
+          <div className="absolute bottom-3 left-3 flex items-center gap-1 rounded-lg bg-black/75 px-2.5 py-1.5 text-sm font-semibold text-white backdrop-blur-sm">
+            <Star
+              size={15}
+              className="fill-red-500 text-red-500"
+            />
+            {movie.user_rating}
+          </div>
+        )}
 
       </div>
 
@@ -62,14 +49,45 @@ export const MovieCard = ({ movie }) => {
         </h3>
 
         <div className="mt-2 flex items-center justify-between text-sm">
+
           <span className="text-gray-500 dark:text-gray-400">
-            {movie.year}
+            {movie.year || "N/A"}
           </span>
 
           <span className="rounded-full bg-red-100 px-3 py-1 font-medium text-red-600 dark:bg-red-950/40 dark:text-red-400">
-            {movie.genre}
+            {movie.type || "Movie"}
           </span>
+
         </div>
+
+        {/* Genres */}
+        {movie.genre_names?.length > 0 && (
+          <div className="mt-3 flex flex-wrap gap-1">
+
+            {movie.genre_names
+              .slice(0, 2)
+              .map((genre) => (
+                <span
+                  key={genre}
+                  className="text-xs text-gray-500 dark:text-gray-400"
+                >
+                  #{genre}
+                </span>
+              ))}
+
+          </div>
+        )}
+
+        {/* Runtime */}
+        {movie.runtime_minutes && (
+          <div className="mt-3 flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400">
+
+            <Clock size={14} />
+
+            {movie.runtime_minutes} min
+
+          </div>
+        )}
 
         {/* Details Button */}
         <button
@@ -81,5 +99,5 @@ export const MovieCard = ({ movie }) => {
       </div>
 
     </div>
-  )
-}
+  );
+};
