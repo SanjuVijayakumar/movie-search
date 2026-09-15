@@ -3,8 +3,9 @@ import "./App.css";
 import Header from "./components/Header/Header";
 import SearchBar from "./components/SearchBar/SearchBar";
 import MovieList from "./components/movielist/MovieList";
-import { searchMovies, getMovieDetails } from "./api/MovieApi";
+import { searchMovies, getMovieDetails, getLatestMovies } from "./api/MovieApi";
 import MovieDetails from "./components/moviedetails/MovieDetails";
+import LatestMovies from "./components/latestmovies/LatestMovies";
 
 
 function App() {
@@ -13,6 +14,10 @@ function App() {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showEmpty, setShowEmpty] = useState(false);
+
+  const [latestMovies, setLatestMovies] = useState([]);
+  const [latestLoading, setLatestLoading] = useState(true);
+
   const [selectedMovie, setSelectedMovie] = useState(null);
 
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
@@ -90,6 +95,33 @@ function App() {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
+  // latest movies
+  useEffect(() => {
+    const fetchLatestMovies = async () => {
+      try {
+        setLatestLoading(true);
+
+        const data = await getLatestMovies();
+
+        const results = data?.titles || [];
+
+        const firstMovies = results.slice(0, 8);
+
+        const detailedMovies = await Promise.all(
+          firstMovies.map((movie) => getMovieDetails(movie.id))
+        );
+
+        setLatestMovies(detailedMovies);
+      } catch (error) {
+        console.error("Failed to load latest movies:", error);
+      } finally {
+        setLatestLoading(false);
+      }
+    };
+
+    fetchLatestMovies();
+  }, []);
+
   return (
     <main className="min-h-screen bg-white text-black transition-colors duration-300 dark:bg-black dark:text-white">
       {/* Header */}
@@ -97,6 +129,8 @@ function App() {
 
       {/* Search Bar */}
       <SearchBar search={search} setSearch={setSearch} onSearch={handleSearch} />
+
+      <LatestMovies movies={latestMovies} loading={latestLoading} onViewDetails={handleViewDetails} />
 
       <MovieList movies={movies} loading={loading} showEmpty={showEmpty} onViewDetails={handleViewDetails} />
 
