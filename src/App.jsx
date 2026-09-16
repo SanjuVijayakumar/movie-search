@@ -6,6 +6,7 @@ import MovieList from "./components/movielist/MovieList";
 import { searchMovies, getMovieDetails, getLatestMovies } from "./api/MovieApi";
 import MovieDetails from "./components/moviedetails/MovieDetails";
 import LatestMovies from "./components/latestmovies/LatestMovies";
+import Footer from "./components/footer/Footer";
 
 
 function App() {
@@ -137,6 +138,8 @@ function App() {
       {selectedMovie && (
         <MovieDetails movie={selectedMovie} onClose={() => setSelectedMovie(null)} />
       )}
+
+      <Footer />
     </main>
   );
 }
